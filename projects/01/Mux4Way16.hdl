@@ -1,0 +1,42 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/01/Mux4Way16.hdl
+
+/**
+ * 4-way 16-bit multiplexor:
+ * out = a if sel == 00
+ *       b if sel == 01
+ *       c if sel == 10
+ *       d if sel == 11
+ */
+
+CHIP Mux4Way16 {
+    IN a[16], b[16], c[16], d[16], sel[2];
+    OUT out[16];
+
+    PARTS:
+    // Put your code here:
+    Not(in = sel[0], out = sel0Bar);
+    Not(in = sel[1], out = sel1Bar);
+ 
+    And16(a = a, b[0..15] = sel0Bar, out = aSel0);
+    And16(a = a, b[0..15] = sel1Bar, out = aSel1);
+    And16(a = aSel0, b = aSel1, out = aSel);
+    
+    And16(a = b, b[0..15] = sel[0], out = bSel0);
+    And16(a = b, b[0..15] = sel1Bar, out = bSel1);
+    And16(a = bSel0, b = bSel1, out = bSel);
+    
+    And16(a = c, b[0..15] = sel0Bar, out = cSel0);
+    And16(a = c, b[0..15] = sel[1], out = cSel1);
+    And16(a = cSel0, b = cSel1, out = cSel);
+    
+    And16(a = d, b[0..15] = sel[0], out = dSel0);
+    And16(a = d, b[0..15] = sel[1], out = dSel1);
+    And16(a = dSel0, b = dSel1, out = dSel);
+    
+    Or16(a = aSel, b = bSel, out = abSel);
+    Or16(a = abSel, b = cSel, out = abcSel);
+    Or16(a = abcSel, b = dSel, out = out);
+}
