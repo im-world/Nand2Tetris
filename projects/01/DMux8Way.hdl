@@ -17,4 +17,15 @@ CHIP DMux8Way {
 
     PARTS:
     // Put your code here:
+    DMux4Way(in = in, sel = sel[0..1], a = virtual00, b = virtual01, c = virtual10, d = virtual11);
+    DMux(in = in, sel = sel[2], a = virtual30, b = virtual31);
+
+    And(a = virtual00, b = virtual30, out = a);
+    And(a = virtual01, b = virtual30, out = b);
+    And(a = virtual10, b = virtual30, out = c);
+    And(a = virtual11, b = virtual30, out = d);
+    And(a = virtual00, b = virtual31, out = e);
+    And(a = virtual01, b = virtual31, out = f);
+    And(a = virtual10, b = virtual31, out = g);
+    And(a = virtual11, b = virtual31, out = h);
 }
