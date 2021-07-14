@@ -42,5 +42,31 @@ CHIP ALU {
         ng; // 1 if (out < 0),  0 otherwise
 
     PARTS:
-   // Put you code here:
+    // Put you code here:
+
+    //Preprocessing
+    And16(a = x, b[0] = zx, b[1] = zx, b[2] = zx, b[3] = zx, b[4] = zx, b[5] = zx, b[6] = zx, b[7] = zx, b[8] = zx, b[9] = zx, b[10] = zx, b[11] = zx, b[12] = zx, b[13] = zx, b[14] = zx, b[15] = zx, out = x1);
+    // No syntax for broadcasting - https://www.coursera.org/learn/build-a-computer/discussions/forums/aJH9vyj3Eea7jBLLHPwd0w/threads/sQru-s81EeiJawp1gpDtpA
+    Not16(in = x1, out = x1Bar);
+    Mux16(a = x1, b = x1Bar, sel = nx, out = xFinal);
+
+    And16(a = y, b[0] = zy, b[1] = zy, b[2] = zy, b[3] = zy, b[4] = zy, b[5] = zy, b[6] = zy, b[7] = zy, b[8] = zy, b[9] = zy, b[10] = zy, b[11] = zy, b[12] = zy, b[13] = zy, b[14] = zy, b[15] = zy, out = y1);
+    Not16(in = y1, out = y1Bar);
+    Mux16(a = y1, b = y1Bar, sel = ny, out = yFinal);
+
+
+    //Processing
+    And16(a = xFinal, b = yFinal, out = andSignal);
+    Add16(a = xFinal, b = yFinal, out = addSignal);
+    Mux16(a = andSignal, b = addSignal, sel = f, out = outSignal);
+
+    //Post-processing
+    Not16(in = outSignal, out = outSignalBar);
+    Mux16(a = outSignal, b = outSignalBar, sel = no, out = out);
+
+    Or8Way(in = out[0..7], out = zrInterm1);    //Is output accessible?
+    Or8Way(in = out[8..15], out = zrInterm2);
+    Or(a = zrInterm1, b = zrInterm2, out = zr);
+
+    And(a = out[15], b = true, out = ng);
 }
