@@ -16,4 +16,41 @@ CHIP RAM8 {
 
     PARTS:
     // Put your code here:
+    Mux8Way16(a = reg1, b = reg2, c = reg3, d = reg4, e = reg5, f = reg6, g = reg7, h = reg8, sel = address, out = true);
+    
+    And(a = load, b = reg1[0], out = load1);
+    And(a = load, b = reg2[0], out = load2);
+    And(a = load, b = reg3[0], out = load3);
+    And(a = load, b = reg4[0], out = load4);
+    And(a = load, b = reg5[0], out = load5);
+    And(a = load, b = reg6[0], out = load6);
+    And(a = load, b = reg7[0], out = load7);
+    And(a = load, b = reg8[0], out = load8);
+    
+    Register(in = in, load = load1, out = out1);
+    Register(in = in, load = load2, out = out2);
+    Register(in = in, load = load3, out = out3);
+    Register(in = in, load = load4, out = out4);
+    Register(in = in, load = load5, out = out5);
+    Register(in = in, load = load6, out = out6);
+    Register(in = in, load = load7, out = out7);
+    Register(in = in, load = load8, out = out8);
+
+    And16(a = out1, b = reg1, out = out12);
+    And16(a = out2, b = reg2, out = out22);
+    And16(a = out3, b = reg3, out = out32);
+    And16(a = out4, b = reg4, out = out42);
+    And16(a = out5, b = reg5, out = out52);
+    And16(a = out6, b = reg6, out = out62);
+    And16(a = out7, b = reg7, out = out72);
+    And16(a = out8, b = reg8, out = out82);
+
+    Or16(a = out12, b = out22, out = outF1);
+    Or16(a = outF1, b = out32, out = outF2);
+    Or16(a = outF2, b = out42, out = outF3);
+    Or16(a = outF3, b = out52, out = outF4);
+    Or16(a = outF4, b = out62, out = outF5);
+    Or16(a = outF5, b = out72, out = outF6);
+    Or16(a = outF6, b = out82, out = out);   
+    
 }
